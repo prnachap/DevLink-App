@@ -5,6 +5,8 @@ import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
 import OutlinedInput, { OutlinedInputProps } from "@mui/material/OutlinedInput";
 import { styled } from "@mui/material/styles";
+import { forwardRef } from "react";
+import { ControllerRenderProps, FieldValues } from "react-hook-form";
 
 const StyledInput = styled(OutlinedInput)(({ theme }) => ({
   color: theme.palette.custom?.darkCharcoal,
@@ -39,9 +41,11 @@ const StyledFormControl = styled(FormControl)(({ theme }) => ({
   },
 }));
 
-type CustomInputProps = OutlinedInputProps & { helperText?: string };
-
-const CustomInput = (props: CustomInputProps) => {
+type CustomInputProps = OutlinedInputProps & {
+  helperText?: string;
+};
+type Ref = any;
+const CustomInput = forwardRef<Ref, CustomInputProps>((props, ref) => {
   const { helperText, label, ...otherProps } = props;
 
   const labelClassName = props?.error ? "text-coralRed" : "text-darkCharcoal";
@@ -54,12 +58,14 @@ const CustomInput = (props: CustomInputProps) => {
       >
         {label}
       </InputLabel>
-      <StyledInput {...otherProps} />
+      <StyledInput {...otherProps} ref={ref} />
       {props.error && (
         <FormHelperText id={"error-text"}>{helperText}</FormHelperText>
       )}
     </StyledFormControl>
   );
-};
+});
+
+CustomInput.displayName = "CustomInput";
 
 export default CustomInput;

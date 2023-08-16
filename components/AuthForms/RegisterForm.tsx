@@ -23,6 +23,7 @@ import PasswordIcon from "../../public/images/icon-password.svg";
 import DevIcon from "../../public/images/logo-devlinks-large.svg";
 import BackdropWithLoader from "../BackdropWithLoader/BackdropWithLoader";
 import CustomSnackbar from "../Snackbar/CustomSnackbar";
+import { MESSAGES } from "@/constants/constant";
 
 const schema = yup.object({
   email: yup.string().required("Email is mandatory").email("Invalid Email"),
@@ -62,7 +63,7 @@ const RegisterForm = () => {
       setIsFetching(false);
       return;
     }
-    dispatch(onSuccess({ success: true }));
+    dispatch(onSuccess({ success: MESSAGES.REGISTER_SUCCESSFUL }));
     setIsFetching(false);
     router.push("/");
   };

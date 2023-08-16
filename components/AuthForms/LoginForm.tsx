@@ -2,7 +2,9 @@
 
 import CustomInput from "@/components/FormElements/CustomInput";
 import SocialLoginButton from "@/components/FormElements/SocialLoginButton";
+import { MESSAGES } from "@/constants/constant";
 import { useAppDispatch, useAppSelector } from "@/redux";
+import { onError, onSuccess } from "@/redux/features/authSlice";
 import { yupResolver } from "@hookform/resolvers/yup";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
@@ -14,13 +16,15 @@ import { signIn, useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import * as yup from "yup";
 import EmailIcon from "../../public/images/icon-email.svg";
 import PasswordIcon from "../../public/images/icon-password.svg";
 import DevIcon from "../../public/images/logo-devlinks-large.svg";
+import BackdropWithLoader from "../BackdropWithLoader/BackdropWithLoader";
 import ForgotterPassword from "../FormElements/ForgotterPassword";
+import CustomSnackbar from "../Snackbar/CustomSnackbar";
 
 const schema = yup.object({
   email: yup.string().required("Can't be empty").email("Invalid email"),
@@ -34,11 +38,19 @@ const LoginForm = () => {
     handleSubmit,
     formState: { errors },
   } = useForm<FormData>({
+    defaultValues: {
+      email: "",
+      password: "",
+    },
     resolver: yupResolver(schema),
   });
 
   const session = useSession();
   const router = useRouter();
+  const dispatch = useAppDispatch();
+  const { error, success } = useAppSelector((state) => state.auth);
+
+  const [isFetching, setIsFetching] = useState(false);
 
   useEffect(() => {
     if (isEqual(session.status, "authenticated")) {
@@ -47,7 +59,24 @@ const LoginForm = () => {
   });
 
   const onSubmit: SubmitHandler<FormData> = async (data) => {
-    await signIn("credentials", { ...data, redirect: false });
+    setIsFetching(true);
+    try {
+      dispatch(onError({ error: null }));
+      const response = await signIn("credentials", {
+        ...data,
+        redirect: false,
+      });
+      if (response?.error) {
+        setIsFetching(false);
+        dispatch(onError({ error: response?.error }));
+        return;
+      }
+      dispatch(onSuccess({ success: MESSAGES.LOGIN_SUCCESSFUL }));
+      setIsFetching(false);
+    } catch (error: any) {
+      setIsFetching(false);
+      dispatch(onError({ error: error?.message }));
+    }
   };
 
   const renderControlledEmailInput = () => {
@@ -111,44 +140,63 @@ const LoginForm = () => {
     );
   };
 
+  const renderLoader = () => {
+    if (isFetching) {
+      return <BackdropWithLoader openModal={isFetching} />;
+    }
+  };
+
+  const renderSnackbar = () => {
+    return error ? (
+      <CustomSnackbar severity="error">{error}</CustomSnackbar>
+    ) : null;
+  };
+
   return (
-    <Box className="w-[95%] min-h-[600px] mt-10 mb-2 m-auto flex flex-col gap-5 md:w-[29rem]">
-      <Image
-        alt="DevLinks - Link Icon"
-        src={DevIcon}
-        width={182}
-        height={40}
-        className="mx-auto"
-      />
-      <Box className="bg-lotion p-10 md:bg-white md:rounded-md">
-        <Typography variant="h1" className="headingOne" gutterBottom>
-          Login
-        </Typography>
-        <Typography variant="body2" className="mb-10 bodyOne !text-nickel">
-          Add your details below to get back into the app
-        </Typography>
-        <form className="flex flex-col gap-6" onSubmit={handleSubmit(onSubmit)}>
-          {renderControlledEmailInput()}
-          {renderControlledPasswordInput()}
-          <ForgotterPassword />
-          <Button
-            type="submit"
-            className="bg-hanPurple text-white hover:bg-paleViolet"
-          >
+    <Box>
+      <Box className="w-[95%] min-h-[600px] mt-10 mb-2 m-auto flex flex-col gap-5 md:w-[29rem]">
+        {renderLoader()}
+        <Image
+          alt="DevLinks - Link Icon"
+          src={DevIcon}
+          width={182}
+          height={40}
+          className="mx-auto"
+        />
+        <Box className="bg-lotion p-10 md:bg-white md:rounded-md">
+          <Typography variant="h1" className="headingOne" gutterBottom>
             Login
-          </Button>
-        </form>
-        <Typography
-          variant="body1"
-          className="text-center mt-6 text-nickel font-normal"
-        >
-          Don&apos;t have an account?{" "}
-          <Link href={"/register"} className="text-hanPurple">
-            Create account
-          </Link>
-        </Typography>
-        <SocialLoginButton helperText="Or continue with" />
+          </Typography>
+          <Typography variant="body2" className="mb-10 bodyOne !text-nickel">
+            Add your details below to get back into the app
+          </Typography>
+          <form
+            className="flex flex-col gap-6"
+            onSubmit={handleSubmit(onSubmit)}
+          >
+            {renderControlledEmailInput()}
+            {renderControlledPasswordInput()}
+            <ForgotterPassword />
+            <Button
+              type="submit"
+              className="bg-hanPurple text-white hover:bg-paleViolet"
+            >
+              Login
+            </Button>
+          </form>
+          <Typography
+            variant="body1"
+            className="text-center mt-6 text-nickel font-normal"
+          >
+            Don&apos;t have an account?{" "}
+            <Link href={"/register"} className="text-hanPurple">
+              Create account
+            </Link>
+          </Typography>
+          <SocialLoginButton helperText="Or continue with" />
+        </Box>
       </Box>
+      {renderSnackbar()}
     </Box>
   );
 };

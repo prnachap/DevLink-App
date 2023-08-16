@@ -29,16 +29,15 @@ const authOptions: AuthOptions = {
             {
               email: credentials.email,
             },
-            { email: 1 }
+            { email: 1, password: 1 }
           );
           if (isEmpty(user)) {
             throw new Error("Invalid Email or Password");
           }
-          const isPasswordMatch = bcrypt.compare(
-            user.password!,
-            credentials.password
+          const isPasswordMatch = await bcrypt.compare(
+            credentials.password,
+            user.password!
           );
-
           if (!isPasswordMatch) {
             throw new Error("Invalid Email or Password");
           }

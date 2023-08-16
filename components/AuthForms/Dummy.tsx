@@ -1,6 +1,5 @@
 "use client";
 
-import { MESSAGES } from "@/constants/constant";
 import { useAppSelector } from "@/redux";
 import { useState } from "react";
 import CustomSnackbar from "../Snackbar/CustomSnackbar";
@@ -13,9 +12,7 @@ const HomePage = () => {
       Home Page
       {counter}
       <button onClick={() => setCounter(counter + 1)}>Add</button>
-      {success && (
-        <CustomSnackbar>{MESSAGES.REGISTER_SUCCESSFUL}</CustomSnackbar>
-      )}
+      {success && <CustomSnackbar>{success}</CustomSnackbar>}
     </div>
   );
 };

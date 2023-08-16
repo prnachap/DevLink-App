@@ -1,7 +1,9 @@
+import AuthSessionContext from "@/context/AuthSessionContext";
 import MuiThemeContext from "@/context/MuiThemeContext";
-import "./globals.css";
+import ReduxProvider from "@/context/ReduxProvider";
 import type { Metadata } from "next";
 import { Instrument_Sans } from "next/font/google";
+import "./globals.css";
 
 const inter = Instrument_Sans({
   weight: ["400", "700"],
@@ -20,13 +22,17 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <MuiThemeContext>
-      <html lang="en">
-        <head>
-          <link rel="icon" href="/favicon.ico" sizes="any" />
-        </head>
-        <body className={inter.className}>{children}</body>
-      </html>
-    </MuiThemeContext>
+    <ReduxProvider>
+      <AuthSessionContext>
+        <MuiThemeContext>
+          <html lang="en">
+            <head>
+              <link rel="icon" href="/favicon.ico" sizes="any" />
+            </head>
+            <body className={inter.className}>{children}</body>
+          </html>
+        </MuiThemeContext>
+      </AuthSessionContext>
+    </ReduxProvider>
   );
 }

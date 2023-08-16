@@ -2,14 +2,19 @@
 
 import CustomInput from "@/components/FormElements/CustomInput";
 import SocialLoginButton from "@/components/FormElements/SocialLoginButton";
+import { useAppDispatch, useAppSelector } from "@/redux";
 import { yupResolver } from "@hookform/resolvers/yup";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import InputAdornment from "@mui/material/InputAdornment";
 import Typography from "@mui/material/Typography";
+import { isEqual } from "lodash";
 import isEmpty from "lodash/isEmpty";
+import { signIn, useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import * as yup from "yup";
 import EmailIcon from "../../public/images/icon-email.svg";
@@ -32,8 +37,17 @@ const LoginForm = () => {
     resolver: yupResolver(schema),
   });
 
-  const onSubmit: SubmitHandler<FormData> = (data) => {
-    console.log(data);
+  const session = useSession();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (isEqual(session.status, "authenticated")) {
+      router.push("/");
+    }
+  });
+
+  const onSubmit: SubmitHandler<FormData> = async (data) => {
+    await signIn("credentials", { ...data, redirect: false });
   };
 
   const renderControlledEmailInput = () => {

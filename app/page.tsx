@@ -1,9 +1,9 @@
-import Dummy from "@/components/AuthForms/Dummy";
+import Navbar from "@/components/Navbar/Navbar";
 
 export default async function Home() {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <Dummy />
+    <main className="mt-0 max-w-[86rem] m-auto md:mt-4 mb-6">
+      <Navbar />
     </main>
   );
 }

@@ -36,4 +36,11 @@
   .bodyTwo {
     @apply text-[0.75rem] leading-5 text-darkCharcoal font-normal;
   }
+  .navBarButton {
+    @apply capitalize text-base text-nickel font-bold hover:bg-Lavender hover:!text-hanPurple
+         px-2 md:px-4;
+  }
+  .navBarIcon {
+    @apply group-hover:[&>path]:fill-hanPurple;
+  }
 }

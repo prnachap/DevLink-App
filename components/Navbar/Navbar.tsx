@@ -5,7 +5,7 @@ import DevIcon from "../Icons/DevIcon";
 import LinkIcon from "../Icons/LinkIcon";
 import PreviewIcon from "../Icons/PreviewIcon";
 import ProfileDetailIcon from "../Icons/ProfileDetailIcon";
-import NavButton from "../NavButton/NavButton";
+import StyledButton from "../NavButton/StyledButton";
 
 const Navbar = () => {
   return (
@@ -14,34 +14,34 @@ const Navbar = () => {
         <DevIcon />
       </Box>
       <Box className="flex gap-4">
-        <NavButton
-          className="rounded-md group navBarButton"
+        <StyledButton
+          className="rounded-md group navBarButton transition-all ease-in-out duration-500"
           startIcon={<LinkIcon className="navBarIcon" />}
           isIconRequired={true}
         >
           Links
-        </NavButton>
+        </StyledButton>
 
-        <NavButton
-          className="rounded-md group navBarButton"
+        <StyledButton
+          className="rounded-md group navBarButton transition-all ease-in-out duration-500"
           startIcon={
             <ProfileDetailIcon className="group-hover:[&>path]:fill-hanPurple  " />
           }
           isIconRequired={true}
         >
           Profile Details
-        </NavButton>
+        </StyledButton>
       </Box>
       <Box>
-        <NavButton
+        <StyledButton
           variant="outlined"
           className="capitalize body-one !text-hanPurple border-hanPurple !font-bold hover:bg-Lavender 
-         px-4"
+         px-4 transition-all ease-in-out duration-500"
           startIcon={<PreviewIcon />}
           isIconRequired={false}
         >
           Preview
-        </NavButton>
+        </StyledButton>
       </Box>
     </Box>
   );

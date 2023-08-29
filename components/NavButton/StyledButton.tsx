@@ -2,17 +2,17 @@ import IconButton from "@mui/material/IconButton";
 import Button, { ButtonProps } from "@mui/material/Button";
 import { Fragment } from "react";
 
-type NavButtonProps = ButtonProps & {
+type StyledButtonProps = ButtonProps & {
   className: string;
   isIconRequired: boolean;
 };
-const NavButton = ({
+const StyledButton = ({
   children,
   startIcon,
   className,
   isIconRequired,
   ...restProps
-}: NavButtonProps) => {
+}: StyledButtonProps) => {
   return (
     <Fragment>
       <IconButton className={`${className} flex md:hidden`} {...restProps}>
@@ -29,4 +29,4 @@ const NavButton = ({
   );
 };
 
-export default NavButton;
+export default StyledButton;

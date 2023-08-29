@@ -43,4 +43,10 @@
   .navBarIcon {
     @apply group-hover:[&>path]:fill-hanPurple;
   }
+  .outlineButton {
+    @apply text-base font-semibold text-hanPurple border-hanPurple hover:bg-Lavender;
+  }
+  .customTransition {
+    @apply transition-all ease-in-out duration-500;
+  }
 }

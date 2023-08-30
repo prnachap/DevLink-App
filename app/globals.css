@@ -49,4 +49,8 @@
   .customTransition {
     @apply transition-all ease-in-out duration-500;
   }
+  .icon-svg:hover g path,
+  .icon-svg:hover path {
+    @apply fill-hanPurple;
+  }
 }

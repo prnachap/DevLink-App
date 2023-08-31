@@ -48,7 +48,7 @@ const BootstrapInput = styled(InputBase)<InputBaseProps & { open: boolean }>(
       border: "1px solid #ced4da",
       padding: "10px 26px 10px 12px",
       transition: theme.transitions.create(["border-color", "box-shadow"]),
-      "&:hover": {
+      "&:hover,&:focus": {
         boxShadow: `0px 0px 32px 0px rgba(99, 60, 255, 0.25)`,
         borderWidth: "1px",
         borderColor: theme.palette.custom.hanPurple,
@@ -57,8 +57,9 @@ const BootstrapInput = styled(InputBase)<InputBaseProps & { open: boolean }>(
     "& > svg": {
       position: "absolute",
       right: "10px",
+      top: "20px",
       transition: "transform 0.3s ease-in-out",
-      transform: `rotate(${open ? "180deg" : "0deg"})`,
+      transform: `rotate(${!open ? "180deg" : "0deg"})`,
     },
   })
 );
@@ -78,7 +79,8 @@ const CustomSelect = (CustomSelectProps: CustomSelectProps) => {
         <MenuItem
           key={item}
           value={item}
-          className="flex items-center gap-2 customTransition hover:bg-white border-b-[1px] border-solid border-lightSilver focus:bg-white icon-svg bodyOne capitalize pb-2"
+          divider
+          className="flex items-center justify-start gap-4 customTransition hover:bg-white focus:!bg-white icon-svg bodyOne capitalize pb-2 last:border-b-0 last:pb-0 "
         >
           <IconComponent className="icon-svg" />
           {item}
@@ -88,11 +90,18 @@ const CustomSelect = (CustomSelectProps: CustomSelectProps) => {
   };
 
   return (
-    <FormControl sx={{ m: 1 }} variant="standard" fullWidth>
-      <InputLabel id="demo-customized-select-label">Age</InputLabel>
+    <FormControl variant="filled" fullWidth>
+      <InputLabel
+        shrink={false}
+        id="custom-select"
+        className="bodyTwo !text-darkCharcoal top-[-12px] !left-[-12px]"
+      >
+        Platform
+      </InputLabel>
       <Select
         id="custom-select"
         fullWidth
+        label="Platform"
         className="bodyOne capitalize"
         value={age}
         onOpen={() => setIconOpen(false)}
@@ -100,6 +109,11 @@ const CustomSelect = (CustomSelectProps: CustomSelectProps) => {
         onChange={handleChange}
         input={<BootstrapInput open={!iconOpen} />}
         IconComponent={DownIcon}
+        MenuProps={{
+          PaperProps: {
+            style: { paddingLeft: 12, paddingRight: 12, marginTop: 10 },
+          },
+        }}
       >
         {renderOptions()}
       </Select>

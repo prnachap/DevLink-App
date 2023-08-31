@@ -4,9 +4,9 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Card from "@mui/material/Card";
 import Divider from "@mui/material/Divider";
-import CustomSelect from "../FormElements/CustomSelect";
 import LinkManagementPanel from "../LinkProfileBuilder/LinkManagementPanel";
 import NoContentScreen from "../LinkProfileBuilder/NoContentScreen";
+import PlatformSelectorWithLink from "../LinkProfileBuilder/PlatformSelectorWithLink";
 
 const LinksDashboard = () => {
   return (
@@ -23,6 +23,7 @@ const LinksDashboard = () => {
             <LinkManagementPanel />
           </Box>
           <Box className="mb-8">
+            <PlatformSelectorWithLink />
             <NoContentScreen />
           </Box>
 
@@ -37,9 +38,6 @@ const LinksDashboard = () => {
             </Button>
           </Box>
         </Card>
-      </Box>
-      <Box style={{ width: "100%" }}>
-        <CustomSelect />
       </Box>
     </>
   );

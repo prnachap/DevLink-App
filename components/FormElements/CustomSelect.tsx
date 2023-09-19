@@ -1,10 +1,11 @@
 import FormControl from "@mui/material/FormControl";
+import FormHelperText from "@mui/material/FormHelperText";
 import InputBase, { InputBaseProps } from "@mui/material/InputBase";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
-import Select, { SelectProps } from "@mui/material/Select";
+import Select, { type SelectProps } from "@mui/material/Select";
 import { styled } from "@mui/material/styles";
-import { useState } from "react";
+import { ChangeEvent, forwardRef, useState } from "react";
 import DownIcon from "../Icons/DownIcon";
 import FacebookIcon from "../Icons/FacebookIcon";
 import FreeCodeCampIcon from "../Icons/FreeCodeCampIcon";
@@ -13,6 +14,12 @@ import GithubIcon from "../Icons/GithubIcon";
 import GitlabIcon from "../Icons/GitlabIcon";
 import LinkedInIcon from "../Icons/LinkedInIcon";
 import YouTubeIcon from "../Icons/YouTubeIcon";
+
+type CustomSelectProps = SelectProps & {
+  helperText?: string;
+  onChange: (event: string | ChangeEvent<Element>) => void;
+};
+type Ref = any;
 
 const IconOptionsMapper: Record<string, React.FC<{ className?: string }>> = {
   github: GithubIcon,
@@ -33,8 +40,10 @@ const options = [
   "frontendmentor",
 ];
 
-const BootstrapInput = styled(InputBase)<InputBaseProps & { open: boolean }>(
-  ({ theme, open }) => ({
+const BootstrapInput = styled(InputBase)<
+  InputBaseProps & { open: boolean; error: boolean | undefined }
+>(({ theme, open, error }) => {
+  return {
     "label + &": {
       marginTop: theme.spacing(3),
     },
@@ -45,32 +54,38 @@ const BootstrapInput = styled(InputBase)<InputBaseProps & { open: boolean }>(
       borderRadius: 4,
       position: "relative",
       backgroundColor: theme.palette.background.paper,
-      border: "1px solid #ced4da",
-      padding: "10px 26px 10px 12px",
+      border: `1px solid ${error ? theme.palette.custom.coralRed : "#ced4da"}`,
+      padding: "12px 26px 12px 12px",
       transition: theme.transitions.create(["border-color", "box-shadow"]),
-      "&:hover,&:focus": {
-        boxShadow: `0px 0px 32px 0px rgba(99, 60, 255, 0.25)`,
+      "&:focus": {
+        boxShadow: `0px 0px 32px 0px ${
+          error ? "rgba(203, 40, 40, 0.25)" : "rgba(99, 60, 255, 0.25)"
+        } `,
         borderWidth: "1px",
-        borderColor: theme.palette.custom.hanPurple,
+        borderColor: error
+          ? theme.palette.custom.coralRed
+          : theme.palette.custom.hanPurple,
       },
     },
     "& > svg": {
+      "& > path": {
+        stroke: error
+          ? theme.palette.custom.coralRed
+          : theme.palette.custom.hanPurple,
+      },
       position: "absolute",
       right: "10px",
       top: "20px",
       transition: "transform 0.3s ease-in-out",
-      transform: `rotate(${!open ? "180deg" : "0deg"})`,
+      transform: `rotate(${!open ? "360deg" : "180deg"})`,
     },
-  })
-);
-
-type CustomSelectProps = SelectProps;
-const CustomSelect = (CustomSelectProps: CustomSelectProps) => {
-  const [age, setAge] = useState("");
-  const [iconOpen, setIconOpen] = useState(false);
-  const handleChange = (event: { target: { value: string } }) => {
-    setAge(event.target.value);
   };
+});
+
+const CustomSelect = forwardRef<Ref, CustomSelectProps>((props, ref) => {
+  const [iconOpen, setIconOpen] = useState(false);
+
+  const { label, error, helperText, onChange, ...otherProps } = props;
 
   const renderOptions = () => {
     return options.map((item) => {
@@ -90,35 +105,43 @@ const CustomSelect = (CustomSelectProps: CustomSelectProps) => {
   };
 
   return (
-    <FormControl variant="filled" fullWidth>
+    <FormControl variant="filled" fullWidth error>
       <InputLabel
         shrink={false}
         id="custom-select"
         className="bodyTwo !text-darkCharcoal top-[-12px] !left-[-12px]"
       >
-        Platform
+        {label}
       </InputLabel>
       <Select
         id="custom-select"
         fullWidth
         label="Platform"
         className="bodyOne capitalize"
-        value={age}
         onOpen={() => setIconOpen(false)}
         onClose={() => setIconOpen(true)}
-        onChange={handleChange}
-        input={<BootstrapInput open={!iconOpen} />}
+        input={<BootstrapInput open={!iconOpen} error={error} />}
         IconComponent={DownIcon}
         MenuProps={{
           PaperProps: {
             style: { paddingLeft: 12, paddingRight: 12, marginTop: 10 },
           },
         }}
+        onChange={onChange}
+        ref={ref}
+        {...otherProps}
       >
         {renderOptions()}
       </Select>
+      {error && (
+        <FormHelperText className="absolute top-[50%] right-8 text-coralRed">
+          {helperText}
+        </FormHelperText>
+      )}
     </FormControl>
   );
-};
+});
+
+CustomSelect.displayName = "CustomSelect";
 
 export default CustomSelect;

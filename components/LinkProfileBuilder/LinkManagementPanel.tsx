@@ -4,7 +4,13 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 
-const LinkManagementPanel = () => {
+type LinkManagementPanelProps = {
+  onAddNewLinkClick: () => void;
+};
+
+const LinkManagementPanel = ({
+  onAddNewLinkClick,
+}: LinkManagementPanelProps) => {
   return (
     <Box>
       <Typography
@@ -21,6 +27,7 @@ const LinkManagementPanel = () => {
       <Button
         variant="outlined"
         className="capitalize outlineButton px-4 customTransition w-full mt-6"
+        onClick={onAddNewLinkClick}
       >
         Add new link
       </Button>

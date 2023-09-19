@@ -1,9 +1,9 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-interface AuthState {
+type AuthState = {
   error: string | null;
   success: string | null;
-}
+};
 
 const initialState: AuthState = {
   error: null,

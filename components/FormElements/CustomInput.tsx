@@ -7,7 +7,7 @@ import OutlinedInput, { OutlinedInputProps } from "@mui/material/OutlinedInput";
 import { styled } from "@mui/material/styles";
 import { forwardRef } from "react";
 
-const StyledInput = styled(OutlinedInput)(({ theme }) => ({
+const StyledInput = styled(OutlinedInput)(({ theme, error }) => ({
   color: theme.palette.custom?.darkCharcoal,
   "label + &": {
     marginTop: theme.spacing(1),
@@ -23,9 +23,13 @@ const StyledInput = styled(OutlinedInput)(({ theme }) => ({
 
   "&.Mui-focused": {
     "& .MuiOutlinedInput-notchedOutline": {
-      boxShadow: `0px 0px 32px 0px rgba(99, 60, 255, 0.25)`,
+      boxShadow: `0px 0px 32px 0px ${
+        error ? "rgba(203, 40, 40, 0.25)" : "rgba(99, 60, 255, 0.25)"
+      } `,
       borderWidth: "1px",
-      borderColor: theme.palette.custom.hanPurple,
+      borderColor: error
+        ? theme.palette.custom.coralRed
+        : theme.palette.custom.hanPurple,
     },
   },
 }));
@@ -57,7 +61,12 @@ const CustomInput = forwardRef<Ref, CustomInputProps>((props, ref) => {
       >
         {label}
       </InputLabel>
-      <StyledInput {...otherProps} ref={ref} />
+      <StyledInput
+        className="bg-white"
+        error={props.error}
+        {...otherProps}
+        ref={ref}
+      />
       {props.error && (
         <FormHelperText id={"error-text"}>{helperText}</FormHelperText>
       )}

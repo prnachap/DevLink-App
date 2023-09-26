@@ -37,11 +37,13 @@
     @apply text-[0.75rem] leading-5 text-darkCharcoal font-normal;
   }
   .navBarButton {
-    @apply capitalize text-base text-nickel font-bold hover:bg-Lavender hover:!text-hanPurple
-         px-2 md:px-4;
+    @apply capitalize text-base text-nickel font-bold px-2 md:px-4;
   }
   .navBarIcon {
     @apply group-hover:[&>path]:fill-hanPurple;
+  }
+  .navBarIcon-active {
+    @apply [&>path]:fill-hanPurple;
   }
   .outlineButton {
     @apply text-base font-semibold text-hanPurple border-hanPurple hover:bg-Lavender;
@@ -52,5 +54,8 @@
   .icon-svg:hover g path,
   .icon-svg:hover path {
     @apply fill-hanPurple;
+  }
+  .navBarButton-active {
+    @apply bg-Lavender !text-hanPurple;
   }
 }

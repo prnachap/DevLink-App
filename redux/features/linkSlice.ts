@@ -1,4 +1,4 @@
-import { FormValues } from "@/global";
+import { type FormValues } from "@/global";
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
 const initialState: FormValues = {

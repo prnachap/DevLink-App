@@ -1,4 +1,37 @@
-const LinkViewPanel = () => {
+"use client";
+import { SVG_COLOR_MAPPER } from "@/constants/constant";
+import {
+  getPlatformSelections,
+  getTextColorBasedOnPlatform,
+  svgArrowVariant,
+  svgIconVariant,
+  svgRectVariant,
+} from "@/utils/home.utils";
+import { AnimatePresence, motion } from "framer-motion";
+import { Fragment } from "react";
+import { UseFormWatch } from "react-hook-form";
+
+type LinkViewPanelProps = {
+  watch: UseFormWatch<{
+    linksList: {
+      platform: string;
+      url: string;
+    }[];
+  }>;
+};
+
+const LINKS_ARRAY = Array(5).fill(0);
+
+const LinkViewPanel = ({ watch }: LinkViewPanelProps) => {
+  const formValues = watch()?.linksList;
+  const indexForSelectedPlatform = getPlatformSelections({ formValues });
+  const iconMapperBasedOnPlatform = getPlatformSelections({
+    formValues,
+    isIndexRequired: false,
+  });
+
+  let initialY = 214;
+
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -19,21 +52,64 @@ const LinkViewPanel = () => {
       <circle cx="153.5" cy="112" r="48" fill="#EEE" />
       <rect width="160" height="16" x="73.5" y="185" fill="#EEE" rx="8" />
       <rect width="72" height="8" x="117.5" y="214" fill="#EEE" rx="4" />
-      <rect width="237" height="44" x="35" y="278" fill="#000" rx="8"></rect>
-      <image
-        width="16"
-        height="16"
-        x="50"
-        y="290"
-        z={10000}
-        fill="#fff"
-        xlinkHref="/images/icon-gitlab.svg"
-      />
-
-      <rect width="237" height="44" x="35" y="342" fill="#EEE" rx="8" />
-      <rect width="237" height="44" x="35" y="406" fill="#EEE" rx="8" />
-      <rect width="237" height="44" x="35" y="470" fill="#EEE" rx="8" />
-      <rect width="237" height="44" x="35" y="534" fill="#EEE" rx="8" />
+      {LINKS_ARRAY?.map((item, index) => {
+        initialY += 64;
+        const iconName = iconMapperBasedOnPlatform?.[index];
+        const color = SVG_COLOR_MAPPER?.[iconName];
+        const textColor = getTextColorBasedOnPlatform(iconName as string);
+        return (
+          <motion.g key={item}>
+            <motion.rect
+              width="237"
+              height="44"
+              x="35"
+              y={initialY}
+              variants={svgRectVariant(color)}
+              initial="initial"
+              animate="animate"
+              rx="8"
+            />
+            <AnimatePresence>
+              {indexForSelectedPlatform.includes(index) && (
+                <Fragment>
+                  <motion.image
+                    width="16"
+                    height="16"
+                    x="50"
+                    variants={svgIconVariant(initialY)}
+                    initial="initial"
+                    animate="animate"
+                    exit={{
+                      y: initialY - 15,
+                      opacity: 0,
+                    }}
+                    xlinkHref={`/images/icon-${iconName}.svg`}
+                  />
+                  <motion.image
+                    width="16"
+                    height="16"
+                    variants={svgArrowVariant(230)}
+                    y={initialY + 15}
+                    initial="initial"
+                    animate="animate"
+                    exit="exit"
+                    xlinkHref={`/images/icon-arrow-right.svg`}
+                  />
+                  <text
+                    x="80"
+                    y={initialY + 28}
+                    fill={textColor}
+                    fontSize="16"
+                    className="capitalize flex justify-center items-center"
+                  >
+                    {iconMapperBasedOnPlatform[index]}
+                  </text>
+                </Fragment>
+              )}
+            </AnimatePresence>
+          </motion.g>
+        );
+      })}
     </svg>
   );
 };

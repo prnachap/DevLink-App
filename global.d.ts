@@ -1,6 +1,4 @@
-import { LinkDetails } from "./redux/features/linkSlice";
-
-type CustomInputProps = OutlinedInputProps & { helperText?: string };
-type FormValues = {
-  linksList: LinkDetails[];
+export type CustomInputProps = OutlinedInputProps & { helperText?: string };
+export type FormValues = {
+  linksList: { platform: string; url: string }[];
 };

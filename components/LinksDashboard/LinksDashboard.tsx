@@ -35,6 +35,7 @@ const LinksDashboard = () => {
     control,
     handleSubmit,
     getValues,
+    watch,
     formState: { errors },
   } = useForm<FormValues>({
     resolver: yupResolver(schema),
@@ -74,13 +75,10 @@ const LinksDashboard = () => {
           variant="outlined"
         >
           <Box className="flex justify-center items-center">
-            <LinkViewPanel />
+            <LinkViewPanel watch={watch} />
           </Box>
         </Card>
-        <Card
-          className="bg-white p-5 border-none max-h-[600px] overflow-y-scroll"
-          variant="outlined"
-        >
+        <Card className="bg-white p-5 border-none " variant="outlined">
           <Box className="mb-6">
             <LinkManagementPanel onAddNewLinkClick={handleToggleCreationForm} />
           </Box>

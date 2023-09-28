@@ -1,4 +1,4 @@
-import { type FormValues } from "@/global";
+import { PlatformType, type FormValues } from "@/global";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Card from "@mui/material/Card";
@@ -18,9 +18,9 @@ import {
   type UseFormHandleSubmit,
 } from "react-hook-form";
 import CustomInput from "../FormElements/CustomInput";
-import CustomSelect from "../FormElements/CustomSelect";
 import DragAndDropIcon from "../Icons/DragAndDropIcon";
 import LinkIcon from "../Icons/LinkIcon";
+import SelectPlatform from "./SelectPlatform";
 
 type PlatformSelectorWithLinkProps = {
   control: Control<FormValues, any>;
@@ -28,6 +28,7 @@ type PlatformSelectorWithLinkProps = {
   fields: FieldArrayWithId<FormValues, "linksList", "id">[];
   remove: UseFieldArrayRemove;
   errors: FieldErrors<FormValues>;
+  platformOptions: PlatformType[];
 };
 
 type SelectOnChangeType = ((
@@ -37,7 +38,8 @@ type SelectOnChangeType = ((
   ((event: string | ChangeEvent<Element>) => void);
 
 const PlatformSelectorWithLink = (props: PlatformSelectorWithLinkProps) => {
-  const { control, fields, handleSubmit, remove, errors } = props;
+  const { control, fields, platformOptions, handleSubmit, remove, errors } =
+    props;
   const [dragOrderList, setDragOrderList] = useState(fields);
 
   useLayoutEffect(() => {
@@ -93,14 +95,13 @@ const PlatformSelectorWithLink = (props: PlatformSelectorWithLinkProps) => {
                   </Box>
                   <Controller
                     render={({ field: { onChange, ...otherProps } }) => (
-                      <CustomSelect
-                        error={!isEmpty(linkListError?.[index]?.["platform"])}
-                        helperText={
-                          linkListError?.[index]?.["platform"]?.message
-                        }
+                      <SelectPlatform
                         label="Platform"
                         onChange={onChange as SelectOnChangeType}
                         {...otherProps}
+                        index={index}
+                        errors={errors}
+                        platformOptions={platformOptions}
                       />
                     )}
                     name={`linksList.${index}.platform`}

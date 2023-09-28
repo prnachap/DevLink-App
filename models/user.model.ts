@@ -1,5 +1,4 @@
-import { Model, Schema, model, models, Document } from "mongoose";
-import bcrypt from "bcrypt";
+import { Document, Model, Schema, model, models } from "mongoose";
 
 export interface IUser extends Document {
   email: string;

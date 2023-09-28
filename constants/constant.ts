@@ -3,6 +3,7 @@ export const MESSAGES = {
   REGISTER_UNSUCCESSFUL: "Registration failed. Please try again later.",
   REGISTER_API_ERROR: "Something went wrong",
   LOGIN_SUCCESSFUL: "Welcome! You have successfully logged in.",
+  SERVER_FAILURE: "Something went wrong",
 };
 
 export const NAV_LINKS = [
@@ -17,12 +18,14 @@ export const SVG_COLOR_MAPPER: Record<string, string> = {
   gitlab: "#EB4925",
   youtube: "#EE3939",
   freecodecamp: "#302267",
-  frontendmentor: "#FAFAFA",
+  "frontend mentor": "#FAFAFA",
   twitter: "#43B7E9",
   twitch: "#EE3FC8",
-  devto: "#333333",
+  "dev.to": "#333333",
   codewars: "#8A1A50",
   hashnode: "#0330D1",
+  codepen: "#1A1A1A",
+  "stack overflow": "#f48024",
 };
 
 export const TEXT_COLOR_BASED_ON_PLATFORM: Record<string, string> = {

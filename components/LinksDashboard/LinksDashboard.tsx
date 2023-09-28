@@ -1,5 +1,6 @@
 "use client";
 
+import { PlatformType } from "@/global";
 import { yupResolver } from "@hookform/resolvers/yup";
 import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
@@ -30,7 +31,11 @@ const schema = yup.object({
 
 type FormValues = yup.InferType<typeof schema>;
 
-const LinksDashboard = () => {
+const LinksDashboard = ({
+  platformOptions,
+}: {
+  platformOptions: PlatformType[];
+}) => {
   const {
     control,
     handleSubmit,
@@ -63,6 +68,7 @@ const LinksDashboard = () => {
         fields={fields}
         remove={remove}
         errors={errors}
+        platformOptions={platformOptions}
       />
     );
   };

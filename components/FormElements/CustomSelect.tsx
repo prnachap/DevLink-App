@@ -2,43 +2,16 @@ import FormControl from "@mui/material/FormControl";
 import FormHelperText from "@mui/material/FormHelperText";
 import InputBase, { InputBaseProps } from "@mui/material/InputBase";
 import InputLabel from "@mui/material/InputLabel";
-import MenuItem from "@mui/material/MenuItem";
 import Select, { type SelectProps } from "@mui/material/Select";
 import { styled } from "@mui/material/styles";
 import { ChangeEvent, forwardRef, useState } from "react";
 import DownIcon from "../Icons/DownIcon";
-import FacebookIcon from "../Icons/FacebookIcon";
-import FreeCodeCampIcon from "../Icons/FreeCodeCampIcon";
-import FrontendMentorIcon from "../Icons/FrontendMentorIcon";
-import GithubIcon from "../Icons/GithubIcon";
-import GitlabIcon from "../Icons/GitlabIcon";
-import LinkedInIcon from "../Icons/LinkedInIcon";
-import YouTubeIcon from "../Icons/YouTubeIcon";
 
 type CustomSelectProps = SelectProps & {
   helperText?: string;
   onChange: (event: string | ChangeEvent<Element>) => void;
 };
 type Ref = any;
-
-const IconOptionsMapper: Record<string, React.FC<{ className?: string }>> = {
-  github: GithubIcon,
-  facebook: FacebookIcon,
-  linkedin: LinkedInIcon,
-  gitlab: GitlabIcon,
-  youtube: YouTubeIcon,
-  freecodecamp: FreeCodeCampIcon,
-  frontendmentor: FrontendMentorIcon,
-};
-const options = [
-  "github",
-  "facebook",
-  "linkedin",
-  "gitlab",
-  "youtube",
-  "freecodecamp",
-  "frontendmentor",
-];
 
 const BootstrapInput = styled(InputBase)<
   InputBaseProps & { open: boolean; error: boolean | undefined }
@@ -85,24 +58,7 @@ const BootstrapInput = styled(InputBase)<
 const CustomSelect = forwardRef<Ref, CustomSelectProps>((props, ref) => {
   const [iconOpen, setIconOpen] = useState(false);
 
-  const { label, error, helperText, onChange, ...otherProps } = props;
-
-  const renderOptions = () => {
-    return options.map((item) => {
-      const IconComponent = IconOptionsMapper?.[item];
-      return (
-        <MenuItem
-          key={item}
-          value={item}
-          divider
-          className="flex items-center justify-start gap-4 customTransition hover:bg-white focus:!bg-white icon-svg bodyOne capitalize pb-2 last:border-b-0 last:pb-0 "
-        >
-          <IconComponent className="icon-svg" />
-          {item}
-        </MenuItem>
-      );
-    });
-  };
+  const { label, error, helperText, children, onChange, ...otherProps } = props;
 
   return (
     <FormControl variant="filled" fullWidth error>
@@ -131,7 +87,7 @@ const CustomSelect = forwardRef<Ref, CustomSelectProps>((props, ref) => {
         ref={ref}
         {...otherProps}
       >
-        {renderOptions()}
+        {children}
       </Select>
       {error && (
         <FormHelperText className="absolute top-[50%] right-8 text-coralRed">

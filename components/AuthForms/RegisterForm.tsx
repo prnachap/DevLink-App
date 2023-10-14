@@ -65,7 +65,7 @@ const RegisterForm = () => {
     }
     dispatch(onSuccess({ success: MESSAGES.REGISTER_SUCCESSFUL }));
     setIsFetching(false);
-    router.push("/");
+    router.push("/dashboard");
   };
 
   const renderControlledEmailInput = () => {

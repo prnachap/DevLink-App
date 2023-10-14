@@ -24,6 +24,8 @@ const NavIconMapper: NavIconMapperType = {
 
 const Navbar = () => {
   const pathName = usePathname();
+  const exludePaths = ["/register", "/login"];
+  const showNavbar = exludePaths.includes(pathName);
 
   const renderNavLinks = () => {
     return NAV_LINKS.map((link) => {
@@ -48,6 +50,8 @@ const Navbar = () => {
       );
     });
   };
+
+  if (showNavbar) return null;
 
   return (
     <Box className="bg-white rounded-lg w-full p-4 flex justify-between">

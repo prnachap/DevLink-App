@@ -21,6 +21,7 @@ import CustomInput from "../FormElements/CustomInput";
 import DragAndDropIcon from "../Icons/DragAndDropIcon";
 import LinkIcon from "../Icons/LinkIcon";
 import SelectPlatform from "./SelectPlatform";
+import { END_POINTS } from "@/constants/endpoints";
 
 type PlatformSelectorWithLinkProps = {
   control: Control<FormValues, any>;
@@ -54,13 +55,22 @@ const PlatformSelectorWithLink = (props: PlatformSelectorWithLinkProps) => {
   };
   const { linksList: linkListError } = errors;
 
-  const onSumbit = handleSubmit((data) => {
-    console.log("data", data);
+  const onSubmit = handleSubmit((data) => {
+    fetch(`${END_POINTS.LINKS}`, {
+      body: JSON.stringify({ linksList: data.linksList }),
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+      },
+      cache: "no-store",
+    })
+      .then((response) => response.json())
+      .then((data) => {});
   });
 
   return (
     <Box>
-      <form onSubmit={onSumbit}>
+      <form onSubmit={onSubmit}>
         <Reorder.Group
           axis="y"
           onReorder={setDragOrderList}

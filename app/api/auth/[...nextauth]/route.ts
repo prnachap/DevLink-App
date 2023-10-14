@@ -9,7 +9,7 @@ import UserModel from "@/models/user.model";
 import { isEmpty } from "lodash";
 import bcrypt from "bcrypt";
 
-const authOptions: AuthOptions = {
+export const authOptions: AuthOptions = {
   adapter: MongoDBAdapter(clientPromise),
   providers: [
     CredentialsProvider({

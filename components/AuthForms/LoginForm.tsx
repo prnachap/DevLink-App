@@ -10,13 +10,12 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import InputAdornment from "@mui/material/InputAdornment";
 import Typography from "@mui/material/Typography";
-import { isEqual } from "lodash";
 import isEmpty from "lodash/isEmpty";
 import { signIn, useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import * as yup from "yup";
 import EmailIcon from "../../public/images/icon-email.svg";
@@ -52,12 +51,6 @@ const LoginForm = () => {
 
   const [isFetching, setIsFetching] = useState(false);
 
-  useEffect(() => {
-    if (isEqual(session.status, "authenticated")) {
-      router.push("/");
-    }
-  });
-
   const onSubmit: SubmitHandler<FormData> = async (data) => {
     setIsFetching(true);
     try {
@@ -73,6 +66,7 @@ const LoginForm = () => {
       }
       dispatch(onSuccess({ success: MESSAGES.LOGIN_SUCCESSFUL }));
       setIsFetching(false);
+      router.push("/dashboard");
     } catch (error: any) {
       setIsFetching(false);
       dispatch(onError({ error: error?.message }));

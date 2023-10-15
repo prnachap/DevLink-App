@@ -1,9 +1,13 @@
 export const MESSAGES = {
   REGISTER_SUCCESSFUL: "Congratulations! Your registration is complete.",
   REGISTER_UNSUCCESSFUL: "Registration failed. Please try again later.",
-  REGISTER_API_ERROR: "Something went wrong",
+  SERVER_API_ERROR: "Something went wrong",
   LOGIN_SUCCESSFUL: "Welcome! You have successfully logged in.",
   SERVER_FAILURE: "Something went wrong",
+  LINKS_SAVE_SUCCESSFUL: "Save was successful!",
+  LINKS_SAVE_UNSUCCESSFUL: "Unable to save, Please try again!",
+  LAST_ITEM_REMOVAL_ERROR:
+    "Sorry, you cannot remove the last item. You must have at least one item",
 };
 
 export const NAV_LINKS = [

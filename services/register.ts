@@ -22,6 +22,6 @@ export const registerUser = async (body: Partial<IUser>) => {
         error: error.response?.data as string,
       };
     }
-    return { error: MESSAGES.REGISTER_UNSUCCESSFUL, status: 500 };
+    return { error: MESSAGES.SERVER_API_ERROR, status: 500 };
   }
 };

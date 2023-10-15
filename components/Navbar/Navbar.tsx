@@ -1,10 +1,12 @@
 "use client";
 
 import { NAV_LINKS } from "@/constants/constant";
+import { useAppSelector } from "@/redux";
 import Box from "@mui/material/Box";
 import { isEqual } from "lodash";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
+import { useState } from "react";
+import CustomDialog from "../CustomDialog/CustomDialog";
 import DevIcon from "../Icons/DevIcon";
 import LinkIcon from "../Icons/LinkIcon";
 import PreviewIcon from "../Icons/PreviewIcon";
@@ -26,27 +28,40 @@ const Navbar = () => {
   const pathName = usePathname();
   const exludePaths = ["/register", "/login"];
   const showNavbar = exludePaths.includes(pathName);
+  const [openDialog, setOpenDialog] = useState(false);
+  const router = useRouter();
+  const isFormChanged = useAppSelector((state) => state.links.isFormChanged);
+
+  const handleCloseDialog = () => setOpenDialog(false);
+
+  const handleRouting = (href: string) => {
+    if (isFormChanged) {
+      setOpenDialog(true);
+      return;
+    }
+    router.push(href);
+  };
 
   const renderNavLinks = () => {
     return NAV_LINKS.map((link) => {
       const isActive = isEqual(pathName, link.href);
       const StartIcon = NavIconMapper[link.name];
       return (
-        <Link href={link.href} key={link.name}>
-          <StyledButton
-            className={`rounded-md group navBarButton transition-all ease-in-out duration-500 ${
-              isActive ? "navBarButton-active" : "navBarButton"
-            }`}
-            startIcon={
-              <StartIcon
-                className={`${isActive ? "navBarIcon-active" : "navBarIcon"}`}
-              />
-            }
-            isIconRequired={true}
-          >
-            {link.name}
-          </StyledButton>
-        </Link>
+        <StyledButton
+          key={link.name}
+          className={`rounded-md group navBarButton transition-all ease-in-out duration-500 ${
+            isActive ? "navBarButton-active" : "navBarButton"
+          }`}
+          startIcon={
+            <StartIcon
+              className={`${isActive ? "navBarIcon-active" : "navBarIcon"}`}
+            />
+          }
+          isIconRequired={true}
+          onClick={() => handleRouting(link.href)}
+        >
+          {link.name}
+        </StyledButton>
       );
     });
   };
@@ -59,6 +74,12 @@ const Navbar = () => {
         <DevIcon />
       </Box>
       <Box className="flex gap-4">{renderNavLinks()}</Box>
+      <CustomDialog
+        open={openDialog}
+        title="Unsaved Changes"
+        description="You have unsaved data. Please save your changes before continuing."
+        handleClose={handleCloseDialog}
+      />
       <Box>
         <StyledButton
           variant="outlined"

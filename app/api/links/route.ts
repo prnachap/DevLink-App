@@ -8,6 +8,21 @@ import { getServerSession } from "next-auth/next";
 import { NextResponse } from "next/server";
 import { authOptions } from "../auth/[...nextauth]/route";
 
+export async function GET() {
+  try {
+    await initializeDB();
+    const session = await getServerSession(authOptions);
+    const userId = await UserModel.findOne({ email: session?.user!.email });
+    const data = await LinksModel.findOne(
+      { createdBy: userId?.id },
+      { _id: 0, "linksList._id": 0 }
+    );
+    return NextResponse.json({ data }, { status: 200 });
+  } catch (error: any) {
+    return NextResponse.json({ message: error?.message });
+  }
+}
+
 export async function POST(request: Request, res: Response) {
   try {
     await initializeDB();
@@ -43,7 +58,7 @@ export async function POST(request: Request, res: Response) {
       });
       return NextResponse.json({ data });
     } else {
-      data = await LinksModel.updateOne({
+      data = await LinksModel.findOneAndUpdate({
         createdBy: userId?.id,
         linksList: body,
       });

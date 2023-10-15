@@ -2,7 +2,7 @@ import { Schema, model, models, type Document, type Model } from "mongoose";
 import { IUser } from "./user.model";
 
 export interface ILinks extends Document {
-  linksList: { platform: string; link: string };
+  linksList: { platform: string; link: string }[];
   createdBy: IUser["_id"];
 }
 

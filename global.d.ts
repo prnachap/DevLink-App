@@ -9,3 +9,11 @@ export type PlatformType = {
   createdAt: string;
   updatedAt: string;
 };
+
+type CreateLinksListResponse = {
+  data: {
+    _id: string;
+    linksList: FormValues["linksList"];
+    createdBy: string;
+  };
+};

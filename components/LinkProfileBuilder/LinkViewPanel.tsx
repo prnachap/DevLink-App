@@ -1,5 +1,6 @@
 "use client";
 import { SVG_COLOR_MAPPER } from "@/constants/constant";
+import { type FormValues } from "@/global";
 import {
   getPlatformSelections,
   getTextColorBasedOnPlatform,
@@ -12,12 +13,7 @@ import { Fragment } from "react";
 import { UseFormWatch } from "react-hook-form";
 
 type LinkViewPanelProps = {
-  watch: UseFormWatch<{
-    linksList: {
-      platform: string;
-      url: string;
-    }[];
-  }>;
+  watch: UseFormWatch<FormValues>;
 };
 
 const LINKS_ARRAY = Array(5).fill(0);
@@ -58,7 +54,7 @@ const LinkViewPanel = ({ watch }: LinkViewPanelProps) => {
         const color = SVG_COLOR_MAPPER?.[iconName];
         const textColor = getTextColorBasedOnPlatform(iconName as string);
         return (
-          <motion.g key={item}>
+          <motion.g key={`${item}-${index}`}>
             <motion.rect
               width="237"
               height="44"
